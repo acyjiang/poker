@@ -8,6 +8,6 @@ client = MongoClient('localhost', 27017)
 db = client.flask_db
 todos = db.todos
 
-@app.route('/', methods=('GET', 'POST'))
+@app.route('/blablabla', methods=('GET', 'POST'))
 def blablabla():
-    db
+    return "hello"
