@@ -17,10 +17,12 @@ app.get('/', function(req, res) {
 
 io.on('connection', (socket) => {
   console.log('user connected');
-  socket.emit("FromAPI", "hello");
-  socket.on('disconnect', function () {
-    console.log('user disconnected');
-  });
+  setTimeout(() => {
+    socket.emit("FromAPI", "hello");
+    socket.on('disconnect', function () {
+      console.log('user disconnected');
+    });
+  }, 3000);
 })
 
 server.listen(port, function() {

@@ -8,14 +8,5 @@ export default defineConfig(({ command, mode }) => {
 
   return {
     plugins: [react(), svgr()],
-    server: {
-      port: 5000,
-      proxy: {
-        '/api': {
-          // target: env.BACKEND_URL,
-          changeOrigin: true,
-        }
-      }
-    }
   }
 })
