@@ -1,11 +1,10 @@
 import React from 'react';
-import '../App.css';
+import '../styles.css';
 
-export default function Card() {
+export default function Card({data}) {
   return (
     <div className="card">
-      <span className="value">K</span>
-      <span className="suit">c</span>
+      <span className="value">{data}</span>
     </div>
   );
 }

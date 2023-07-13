@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import logo from '../logo.svg';
-import '../App.css';
+import '../styles.css';
 import { useLoaderData } from 'react-router-dom';
 import { BACKEND_URL } from '../config';
 import socketIOClient from 'socket.io-client';

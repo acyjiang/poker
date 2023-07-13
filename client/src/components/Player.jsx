@@ -1,12 +1,14 @@
 import React from 'react';
-import '../App.css';
+import '../styles.css';
 import Card from './Card';
 
-export default function Player() {
+export default function Player({ data }) {
   return (
     <div className='player'>
-      <Card/>
-      <Card/>
+      <span className='value'>{data.name}:</span>
+      <Card data = {data.cards[0]}/>
+      <Card data = {data.cards[1]}/>
+      <span className='value'>{data.stack}</span>
     </div>
   );
 }
