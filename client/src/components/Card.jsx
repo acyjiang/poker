@@ -4,8 +4,8 @@ import { Card } from "@mantine/core";
 
 export default function PlayingCard({ data }) {
   return (
-    <Card>
-      <span className="value">{data}</span>
+    <Card padding="sm" m="sm" shadow="lg" withBorder>
+      {data}
     </Card>
   );
 }

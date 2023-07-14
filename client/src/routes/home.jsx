@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { SocketContext } from "../main";
 import logo from "../logo.svg";
 import "../styles.css";
+import { Button, Code, Text } from "@mantine/core";
 
 export default function HomePage() {
   const socket = useContext(SocketContext);
@@ -20,42 +21,17 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          <button onClick={joinGame}>Join game</button>
-        </p>
-        <p>Response: {response}</p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {" | "}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
+    <>
+      <img src={logo} className="App-logo" alt="logo" />
+      <Text>Hello Vite + React!</Text>
+      <Button onClick={() => setCount((count) => count + 1)} mb="sm">
+        count is: {count}
+      </Button>
+      <Button onClick={joinGame}>Join game</Button>
+      <Text>Response: {response}</Text>
+      <Text>
+        Edit <Code>App.jsx</Code> and save to test HMR updates.
+      </Text>
+    </>
   );
 }

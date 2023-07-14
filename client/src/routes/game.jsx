@@ -3,6 +3,7 @@ import { SocketContext } from "../main";
 import "../styles.css";
 import Player from "../components/player";
 import PlayingCard from "../components/card";
+import { Container } from "@mantine/core";
 
 export default function GamePage() {
   const socket = useContext(SocketContext);
@@ -20,19 +21,17 @@ export default function GamePage() {
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <div className="flex-container">
-          {players.map((player) => (
-            <Player key={player.name} data={player} />
-          ))}
-        </div>
-        <div className="flex-container">
-          {community.map((card) => (
-            <PlayingCard key={card} data={card} />
-          ))}
-        </div>
-      </header>
-    </div>
+    <>
+      <Container display="flex">
+        {players.map((player) => (
+          <Player key={player.name} data={player} />
+        ))}
+      </Container>
+      <Container display="flex">
+        {community.map((card) => (
+          <PlayingCard key={card} data={card} />
+        ))}
+      </Container>
+    </>
   );
 }
