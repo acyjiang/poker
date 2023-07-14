@@ -1,10 +1,11 @@
-import React from 'react';
-import '../styles.css';
+import React from "react";
+import "../styles.css";
+import { Card } from "@mantine/core";
 
-export default function Card({data}) {
+export default function PlayingCard({ data }) {
   return (
-    <div className="card">
+    <Card>
       <span className="value">{data}</span>
-    </div>
+    </Card>
   );
 }

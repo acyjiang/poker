@@ -41,14 +41,6 @@ button {
   font-size: calc(10px + 2vmin);
 }
 
-.card {
-  width: 3.05rem;
-  height: 3.7rem;
-  background-color: white;
-  border-radius: 0.5rem;
-  margin: 0.5rem;
-}
-
 .value {
   color: black;
 }

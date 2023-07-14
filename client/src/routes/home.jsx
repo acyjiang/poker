@@ -1,23 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import logo from '../logo.svg';
-import '../styles.css';
-import { useLoaderData } from 'react-router-dom';
-import { BACKEND_URL } from '../config';
-import socketIOClient from 'socket.io-client';
-
+import React, { useState, useEffect, useContext } from "react";
+import { SocketContext } from "../main";
+import logo from "../logo.svg";
+import "../styles.css";
 
 export default function HomePage() {
-  const socket = socketIOClient(BACKEND_URL);
+  const socket = useContext(SocketContext);
   const [count, setCount] = useState(0);
 
   const [response, setResponse] = useState("none");
 
   const joinGame = () => {
-    window.location.replace('/game');
-  }
+    window.location.replace("/game");
+  };
 
   useEffect(() => {
-    socket.on("FromAPI", data => {
+    socket.on("FromAPI", (data) => {
       setResponse(data);
     });
   }, []);
@@ -28,18 +25,14 @@ export default function HomePage() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>Hello Vite + React!</p>
         <p>
-          <button onClick={() => setCount(count => count + 1)}>
+          <button onClick={() => setCount((count) => count + 1)}>
             count is: {count}
           </button>
         </p>
         <p>
-          <button onClick = {joinGame}>
-            Join game
-          </button>
+          <button onClick={joinGame}>Join game</button>
         </p>
-        <p>
-          Response: {response}
-        </p>
+        <p>Response: {response}</p>
         <p>
           Edit <code>App.jsx</code> and save to test HMR updates.
         </p>
@@ -52,7 +45,7 @@ export default function HomePage() {
           >
             Learn React
           </a>
-          {' | '}
+          {" | "}
           <a
             className="App-link"
             href="https://vitejs.dev/guide/features.html"
@@ -65,8 +58,4 @@ export default function HomePage() {
       </header>
     </div>
   );
-}
-
-export async function homeLoader() {
-  return null;
 }

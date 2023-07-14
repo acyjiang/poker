@@ -1,32 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import React, { createContext } from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  RouterProvider
-} from 'react-router-dom';
+  RouterProvider,
+} from "react-router-dom";
 
-import HomePage, { homeLoader } from "./routes/HomePage";
-import GamePage, { gameLoader } from './routes/GamePage';
-import NotFoundPage from './routes/NotFoundPage';
+import HomePage, { homeLoader } from "./routes/home";
+import GamePage, { gameLoader } from "./routes/game";
+import NotFoundPage from "./routes/404";
+
+import { BACKEND_URL } from "./config";
+import socketIOClient from "socket.io-client";
+
+const socket = socketIOClient(BACKEND_URL);
+export const SocketContext = createContext(socket);
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route errorElement={<NotFoundPage />}>
-      <Route index path="/" loader={homeLoader} element={<HomePage />} />
-      <Route
-        path="/game"
-        loader={gameLoader}
-        element={<GamePage />}
-      />
+      <Route index path="/" element={<HomePage />} />
+      <Route path="/game" element={<GamePage />} />
     </Route>
   )
 );
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <SocketContext.Provider value={socket}>
+      <RouterProvider router={router} />
+    </SocketContext.Provider>
   </React.StrictMode>
-)
+);
