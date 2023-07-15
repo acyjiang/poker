@@ -1,7 +1,8 @@
-// import gameManager from './game';
+import GameManager from './game';
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
+import { router } from './api';
 
 const app = express();
 const server = http.createServer(app);
@@ -15,7 +16,11 @@ const io = new Server(server, {
   }
 });
 
+app.use("/api", router);
+
 const port = process.env.PORT || 8080;
+
+const gameManager = new GameManager();
 
 const gameState = {
   0: {players: [
@@ -31,10 +36,6 @@ const gameState = {
       betsize: 10}
   ], community: ["6d", "4d", "4s", "3s", "4h"]}
 }
-
-app.get('/', function(req, res) {
-   res.send('hello');
-});
 
 io.on('connection', (socket) => {
   console.log('user connected');
