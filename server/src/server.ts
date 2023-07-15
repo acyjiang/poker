@@ -1,7 +1,12 @@
-const express = require('express');
+// import gameManager from './game';
+import express from 'express';
+import http from 'http';
+import { Server } from 'socket.io';
+
 const app = express();
-const server = require('http').createServer(app);
-const io = require("socket.io")(server, {
+const server = http.createServer(app);
+
+const io = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
@@ -9,6 +14,7 @@ const io = require("socket.io")(server, {
     credentials: true
   }
 });
+
 const port = process.env.PORT || 8080;
 
 const gameState = {
@@ -42,7 +48,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', function () {
     console.log('user disconnected');
   });
-})
+});
 
 server.listen(port, function() {
   console.log(`Listening on port ${port}`);
