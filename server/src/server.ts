@@ -1,7 +1,7 @@
 import GameManager from './game';
 import express from 'express';
 import http from 'http';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import { router } from './api';
 
 const app = express();
@@ -20,6 +20,10 @@ app.use("/api", router);
 
 const port = process.env.PORT || 8080;
 
+/**
+ * ------------- Game state manager -------------
+ */
+
 const gameManager = new GameManager();
 
 const gameState = {
@@ -37,8 +41,15 @@ const gameState = {
   ], community: ["6d", "4d", "4s", "3s", "4h"]}
 }
 
+/**
+ * ------------- socket setup -------------
+ */
+
+const userToSocketMap: Map<number, Socket> = new Map();
+export const getSocketFromUser = (id: number) => (userToSocketMap[id]);
+
 io.on('connection', (socket) => {
-  console.log('user connected');
+  console.log('user connected: socket id', socket.id);
 
   socket.emit("FromAPI", "hello");
 
@@ -50,6 +61,10 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   });
 });
+
+/**
+ * ------------- listen on port -------------
+ */
 
 server.listen(port, function() {
   console.log(`Listening on port ${port}`);
