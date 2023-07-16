@@ -14,16 +14,16 @@ class PokerGame {
     public readonly users: User[];
     public readonly deck: decks.StandardDeck;
     private community: Card[];
-    public readonly bigBlind: number;
-    public readonly smallBlind: number;
     public readonly potSize: number;
     public constructor (
+        public readonly bigBlind: number,
+        public readonly smallBlind: number
     ) {
         this.deck = new decks.StandardDeck();
         this.community = [];
     }
-    public addPlayer (userId: number) {
-        this.users.push({id: userId, name: "hi", hand: [], stack: 400, betSize: 0});
+    public addPlayer (userId: number, name: string, startingStack: number) {
+        this.users.push({id: userId, name: name, hand: [], stack: startingStack, betSize: 0});
     }
     public startRound () {
         this.deck.shuffleAll();
@@ -44,10 +44,10 @@ export default class GameManager {
         this.games = new Map();
     }
     public newGame (gameId: string) {
-        this.games[gameId] = new PokerGame();
+        this.games[gameId] = new PokerGame(1, 2);
     }
-    public joinGame (userId: number, gameId: string) {
+    public joinGame (userId: number, gameId: string, name: string, startingStack: number) {
         const game: PokerGame = this.games[gameId];
-        game.addPlayer(userId);
+        game.addPlayer(userId, name, startingStack);
     }
 }

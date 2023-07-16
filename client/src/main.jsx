@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 
 import HomePage from "./routes/home";
-import GamePage from "./routes/game";
+import GamePage, { gameLoader } from "./routes/game";
 import NotFoundPage from "./routes/404";
 
 import { BACKEND_URL } from "./config";
@@ -44,7 +44,7 @@ const router = createBrowserRouter(
       }
     >
       <Route index path="/" element={<HomePage />} />
-      <Route path="/game" element={<GamePage />} />
+      <Route path="/game/:gameId" loader={gameLoader} element={<GamePage />} />
     </Route>
   )
 );

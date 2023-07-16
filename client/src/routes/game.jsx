@@ -35,3 +35,8 @@ export default function GamePage() {
     </>
   );
 }
+
+export function gameLoader({ params }) {
+  console.log(params.gameId);
+  return params.gameId;
+}
