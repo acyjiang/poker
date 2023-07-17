@@ -24,10 +24,10 @@ const port = process.env.PORT || 8080;
  * ------------- Game state manager -------------
  */
 
-const gameManager = new GameManager();
+export const gameManager = new GameManager();
 
 const gameState = {
-  0: {players: [
+  "hello": {players: [
     {
       name: 'A',
       cards: ["Kc", "Ac"],
@@ -50,12 +50,6 @@ export const getSocketFromUser = (id: number) => (userToSocketMap[id]);
 
 io.on('connection', (socket) => {
   console.log('user connected: socket id', socket.id);
-
-  socket.emit("FromAPI", "hello");
-
-  socket.on('connect to game', function(num) {
-    socket.emit("update game state", gameState[num]);
-  });
 
   socket.on('disconnect', function () {
     console.log('user disconnected');

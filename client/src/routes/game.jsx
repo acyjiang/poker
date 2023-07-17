@@ -4,15 +4,17 @@ import "../styles.css";
 import Player from "../components/player";
 import PlayingCard from "../components/card";
 import { Container } from "@mantine/core";
+import { useLoaderData } from "react-router-dom";
 
 export default function GamePage() {
+  const gameId = useLoaderData();
   const socket = useContext(SocketContext);
 
   const [players, setPlayers] = useState([]);
   const [community, setCommunity] = useState([]);
 
   useEffect(() => {
-    socket.emit("connect to game", 0);
+    socket.emit("connect to game", gameId);
 
     socket.on("update game state", (data) => {
       setPlayers(data.players);
@@ -37,6 +39,6 @@ export default function GamePage() {
 }
 
 export function gameLoader({ params }) {
-  console.log(params.gameId);
+  console.log(params);
   return params.gameId;
 }
