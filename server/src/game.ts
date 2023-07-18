@@ -3,7 +3,7 @@ import { Socket } from 'socket.io';
 import { getSocketFromUser } from './server';
 
 type User = {
-    id: number;
+    id: string;
     name: string;
     hand: Card[];
     stack: number;
@@ -12,12 +12,12 @@ type User = {
 
 class PokerGame {
     public readonly players: User[];
-    public readonly observerIDs: number[];
+    public readonly observerIDs: string[];
     public readonly deck: decks.StandardDeck;
     private community: Card[];
     public readonly potSize: number;
     public constructor (
-        public readonly ownerId: number,
+        public readonly ownerId: string,
         public readonly bigBlind: number,
         public readonly smallBlind: number
     ) {
@@ -27,7 +27,7 @@ class PokerGame {
         this.observerIDs = [ownerId];
         this.sendUpdate();
     }
-    public addPlayer (userId: number, name: string, startingStack: number) {
+    public addPlayer (userId: string, name: string, startingStack: number) {
         this.players.push({id: userId, name: name, hand: [], stack: startingStack, betSize: 0});
     }
     private sendUpdate () {
@@ -56,10 +56,10 @@ export default class GameManager {
     public constructor () {
         this.games = new Map();
     }
-    public newGame (ownerId: number, gameId: string) {
+    public newGame (ownerId: string, gameId: string) {
         this.games[gameId] = new PokerGame(ownerId, 1, 2);
     }
-    public joinGame (userId: number, gameId: string, name: string, startingStack: number) {
+    public joinGame (userId: string, gameId: string, name: string, startingStack: number) {
         const game: PokerGame = this.games[gameId];
         game.addPlayer(userId, name, startingStack);
     }

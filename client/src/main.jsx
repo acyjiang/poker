@@ -16,8 +16,12 @@ import NotFoundPage from "./routes/404";
 import { BACKEND_URL } from "./config";
 import socketIOClient from "socket.io-client";
 import { MantineProvider } from "@mantine/core";
+import { initSocket } from "./api/game";
 
 const socket = socketIOClient(BACKEND_URL);
+socket.on('connect', () => {
+  initSocket(socket.id, (Math.random() + 1).toString(36).substring(7));
+})
 export const SocketContext = createContext(socket);
 
 const router = createBrowserRouter(

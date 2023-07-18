@@ -6,7 +6,6 @@ import { createGame } from "../api/game";
 
 export default function HomePage() {
   const socket = useContext(SocketContext);
-  // const [gameId, setGameId] = useState("");
 
   const handleNewGame = async () => {
     const newGameId = await createGame();
@@ -17,13 +16,6 @@ export default function HomePage() {
     <>
       <Text>Fair Poker ???</Text>
       <Button onClick={handleNewGame}>Create Game</Button>
-      {/* <form action={`/game/${gameId}`}>
-        <TextInput
-          value={gameId}
-          onChange={(event) => setGameId(event.target.value)}
-        />
-        <Button type="submit">Join game</Button>
-      </form> */}
     </>
   );
 }

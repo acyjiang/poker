@@ -45,11 +45,16 @@ const gameState = {
  * ------------- socket setup -------------
  */
 
-const userToSocketMap: Map<number, Socket> = new Map();
-export const getSocketFromUser = (id: number) => (userToSocketMap[id]);
+const userToSocketMap: Map<string, Socket> = new Map();
+const socketIDtoSocketMap: Map<string, Socket> = new Map();
+export const getSocketFromUser = (userId: string) => (userToSocketMap[userId]);
+export const setSocketFromUser = (userId: string, socketId: string) => {
+  userToSocketMap.set(userId, socketIDtoSocketMap[socketId]);
+}
 
 io.on('connection', (socket) => {
-  console.log('user connected: socket id', socket.id);
+  console.log('socket connected', socket.id);
+  socketIDtoSocketMap[socket.id] = socket;
 
   socket.on('disconnect', function () {
     console.log('user disconnected');
