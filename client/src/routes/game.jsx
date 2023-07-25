@@ -1,26 +1,24 @@
 import React, { useState, useEffect, useContext } from "react";
-import { SocketContext } from "../main";
 import "../styles.css";
 import Player from "../components/player";
 import PlayingCard from "../components/card";
 import { Container } from "@mantine/core";
 import { useLoaderData } from "react-router-dom";
+import socketIOClient from "socket.io-client";
+import { BACKEND_URL } from "../config";
 
 export default function GamePage() {
-  const gameId = useLoaderData();
-  const socket = useContext(SocketContext);
+  const socket = useLoaderData();
 
   const [players, setPlayers] = useState([]);
   const [community, setCommunity] = useState([]);
 
   useEffect(() => {
-    socket.emit("connect to game", gameId);
-
-    socket.on("update game state", (data) => {
-      setPlayers(data.players);
-      setCommunity(data.community);
+    socket.on('state', (state) => {
+      setCommunity(state.community);
+      setPlayers(state.players);
     });
-  }, []);
+  }, [socket]);
 
   return (
     <>
@@ -40,5 +38,7 @@ export default function GamePage() {
 
 export function gameLoader({ params }) {
   console.log(params);
-  return params.gameId;
+  const socket = socketIOClient(BACKEND_URL);
+  socket.emit('ingress', params.gameId);
+  return socket;
 }

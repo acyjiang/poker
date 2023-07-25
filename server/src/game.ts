@@ -1,6 +1,6 @@
 import { Card, decks } from 'cards';
 import { Socket } from 'socket.io';
-import { getSocketFromUser } from './server';
+import { socketIDtoSocketMap } from './server';
 
 type User = {
     id: string;
@@ -17,28 +17,25 @@ class PokerGame {
     private community: Card[];
     public readonly potSize: number;
     public constructor (
-        public readonly ownerId: string,
-        public readonly bigBlind: number,
-        public readonly smallBlind: number
+        public readonly smallBlind: number,
+        public readonly bigBlind: number
     ) {
         this.deck = new decks.StandardDeck();
         this.community = [];
         this.players = [];
-        this.observerIDs = [ownerId];
+        this.observerIDs = [];
         this.sendUpdate();
     }
-    public addPlayer (userId: string, name: string, startingStack: number) {
-        this.players.push({id: userId, name: name, hand: [], stack: startingStack, betSize: 0});
+    public addObserver (userId: string) {
+        this.observerIDs.push(userId);
+        this.sendUpdate();
     }
     private sendUpdate () {
         console.log(this);
         this.players.forEach((user) => {
-            const socket = getSocketFromUser(user.id);
-            socket.emit("new game state", this);
         });
         this.observerIDs.forEach((userId) => {
-            const socket = getSocketFromUser(userId);
-            socket.emit("new game state", this);
+            socketIDtoSocketMap[userId].emit('state', {players: this.players, community: this.community});
         });
     }
     public startRound () {
@@ -56,11 +53,11 @@ export default class GameManager {
     public constructor () {
         this.games = new Map();
     }
-    public newGame (ownerId: string, gameId: string) {
-        this.games[gameId] = new PokerGame(ownerId, 1, 2);
+    public newGame (gameId: string) {
+        this.games[gameId] = new PokerGame(1, 2);
     }
-    public joinGame (userId: string, gameId: string, name: string, startingStack: number) {
+    public joinGame (userId: string, gameId: string) {
         const game: PokerGame = this.games[gameId];
-        game.addPlayer(userId, name, startingStack);
+        game.addObserver(userId);
     }
 }

@@ -1,5 +1,6 @@
 import { Router, Request } from "express";
-import { gameManager, setSocketFromUser } from "./server";
+import { gameManager } from "./server";
+import { v4 as uuidv4 } from 'uuid';
 
 export const router = Router();
 
@@ -10,19 +11,8 @@ router.all('*', function (req, res, next) {
     next();
 });
 
-router.post('/initsocket', function(req, res) {
-    // TODO: how do u do session user
-    console.log(req.query.userId);
-    setSocketFromUser(req.query.userId.toString(), req.query.socketId.toString());
-});
-
 router.get('/newgame', function(req, res) {
-    const newId = 'hello';
-    gameManager.newGame('a', newId);
-    res.send(newId);
-});
-
-router.get('/joingame', function(req, res) {
-    const newId = 'hello';
+    const newId = uuidv4();
+    gameManager.newGame(newId);
     res.send(newId);
 });

@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
-import { SocketContext } from "../main";
+import React from "react";
 import "../styles.css";
-import { Button, Text, TextInput } from "@mantine/core";
+import { Button, Text } from "@mantine/core";
 import { createGame } from "../api/game";
 
 export default function HomePage() {
-  const socket = useContext(SocketContext);
 
   const handleNewGame = async () => {
     const newGameId = await createGame();

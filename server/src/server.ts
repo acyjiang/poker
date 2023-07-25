@@ -26,35 +26,19 @@ const port = process.env.PORT || 8080;
 
 export const gameManager = new GameManager();
 
-const gameState = {
-  "hello": {players: [
-    {
-      name: 'A',
-      cards: ["Kc", "Ac"],
-      stack: 400,
-      betsize: 10}, 
-    {
-      name: 'B',
-      cards: ["Tc", "9c"],
-      stack: 400,
-      betsize: 10}
-  ], community: ["6d", "4d", "4s", "3s", "4h"]}
-}
-
 /**
  * ------------- socket setup -------------
  */
 
-const userToSocketMap: Map<string, Socket> = new Map();
-const socketIDtoSocketMap: Map<string, Socket> = new Map();
-export const getSocketFromUser = (userId: string) => (userToSocketMap[userId]);
-export const setSocketFromUser = (userId: string, socketId: string) => {
-  userToSocketMap.set(userId, socketIDtoSocketMap[socketId]);
-}
+export const socketIDtoSocketMap: Map<string, Socket> = new Map();
 
 io.on('connection', (socket) => {
   console.log('socket connected', socket.id);
   socketIDtoSocketMap[socket.id] = socket;
+
+  socket.on('ingress', function(gameId) {
+    gameManager.joinGame(socket.id, gameId);
+  })
 
   socket.on('disconnect', function () {
     console.log('user disconnected');
