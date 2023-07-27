@@ -31,13 +31,23 @@ export const gameManager = new GameManager();
  */
 
 export const socketIDtoSocketMap: Map<string, Socket> = new Map();
+const socketIDtoGame: Map<string, string> = new Map();
 
 io.on('connection', (socket) => {
   console.log('socket connected', socket.id);
   socketIDtoSocketMap[socket.id] = socket;
 
   socket.on('ingress', function(gameId) {
+    socketIDtoGame[socket.id] = gameId;
     gameManager.joinGame(socket.id, gameId);
+  })
+
+  socket.on('sit', function(seat) {
+    gameManager.sit(socket.id, socketIDtoGame[socket.id], seat);
+  })
+
+  socket.on('start', function () {
+    gameManager.startGame(socketIDtoGame[socket.id]);
   })
 
   socket.on('disconnect', function () {

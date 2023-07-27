@@ -1,11 +1,21 @@
 import React from "react";
 import "../styles.css";
-import { Card } from "@mantine/core";
+import { createStyles, Card } from "@mantine/core";
 
 export default function PlayingCard({ data }) {
+  const { classes } = useStyles();
   return (
-    <Card padding="sm" m="sm" shadow="lg" withBorder>
-      {data}
-    </Card>
+    data ? 
+      <Card padding={0} shadow="lg" className={classes.card} withBorder>{data} </Card> :
+      <Card padding={0} shadow="lg" className={classes.card} withBorder></Card>
   );
 }
+
+const useStyles = createStyles(() => ({
+  card: {
+    fontSize: "50px",
+    width: "60px",
+    height: "80px",
+    margin: "0px",
+  },
+}));

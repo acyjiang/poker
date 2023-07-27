@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import "../styles.css";
 import Player from "../components/player";
 import PlayingCard from "../components/card";
-import { Container } from "@mantine/core";
+import { Button, Container } from "@mantine/core";
 import { useLoaderData } from "react-router-dom";
 import socketIOClient from "socket.io-client";
 import { BACKEND_URL } from "../config";
@@ -12,32 +12,39 @@ export default function GamePage() {
 
   const [players, setPlayers] = useState([]);
   const [community, setCommunity] = useState([]);
+  const displayCommunity = community.concat([undefined, undefined, undefined, undefined, undefined]).slice(0, 5);
 
-  useEffect(() => {
-    socket.on('state', (state) => {
-      setCommunity(state.community);
-      setPlayers(state.players);
-    });
-  }, [socket]);
+  socket.on('state', (state) => {
+    setCommunity(state.community);
+    setPlayers(state.players);
+  });
+
+  const handleSit = (idx) => {
+    socket.emit("sit", idx);
+  }
+
+  const handleStartGame = () => {
+    socket.emit("start");
+  }
 
   return (
     <>
       <Container display="flex">
-        {players.map((player) => (
-          <Player key={player.name} data={player} />
+        {players.map((player, idx) => (
+          <Player key={`player${idx}`} data={player} onSit = {() => handleSit(idx)}/>
         ))}
       </Container>
       <Container display="flex">
-        {community.map((card) => (
-          <PlayingCard key={card} data={card} />
+        {displayCommunity.map((card, idx) => (
+          <PlayingCard key={`community${idx}`} data={card} />
         ))}
       </Container>
+      <Button onClick={handleStartGame}>Start Game</Button>
     </>
   );
 }
 
 export function gameLoader({ params }) {
-  console.log(params);
   const socket = socketIOClient(BACKEND_URL);
   socket.emit('ingress', params.gameId);
   return socket;
